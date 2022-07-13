@@ -16,7 +16,7 @@ function constructPageViewEvent(eventData) {
     const currentTime = new Date().getTime();
     const userAgent = window.navigator.userAgent;
     const webPageEvent = {
-        'eventId': 1234,
+        'eventId': crypto.randomUUID(),
         'EVENT_TYPE': 'WebPageView',
         'timestamp': currentTime,
         'url': eventData.newURL.href,
