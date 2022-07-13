@@ -1,11 +1,11 @@
 import 'url-change-event';
 let app;
 
-export function init(appName){
+function init(appName){
     app = appName;
 }
 
-export function capturePageViewEvents() {
+function capturePageViewEvents() {
     window.addEventListener('urlchangeevent', function(eventData) {
         const webPageEvent = constructPageViewEvent(eventData)
         sendToServer(webPageEvent);
@@ -30,8 +30,10 @@ function constructPageViewEvent(eventData) {
     }
     return webPageEvent;
 }
+
 function sendToServer(event){
     console.log(event);
 }
 
-// export { init, capturePageViewEvents }
+exports.init = init;
+exports.capturePageViewEvents = capturePageViewEvents;
