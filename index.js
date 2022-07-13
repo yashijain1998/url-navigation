@@ -34,5 +34,5 @@ function sendToServer(event){
     console.log(event);
 }
 
-exports.init = init;
-exports.capturePageViewEvents = capturePageViewEvents
+module.exports.init = init;
+module.exports.capturePageViewEvents = capturePageViewEvents;
