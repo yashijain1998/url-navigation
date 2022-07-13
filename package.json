@@ -1,0 +1,14 @@
+{
+  "name": "url-navigation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "url-change-event": "^0.1.3"
+  }
+}
