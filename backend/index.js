@@ -1,4 +1,5 @@
 const { Kafka, Partitioners } = require('kafkajs');
+const crypto = require('crypto');
 const saslUsername = process.env.kafka_sasl_username;
 const saslPassword = process.env.kafka_sasl_password;
 const kafkaBroker = process.env.kafka_bootstrap_server;
@@ -23,6 +24,7 @@ async function init() {
 }
 
 function enrichEvent(data, ip) {
+    console.log('data in enchrichment', data, typeof data)
     const currentTime = new Date().getTime();
     const eventData = {
         ...data,
@@ -40,8 +42,8 @@ async function sendToCavalier(producer, eventData) {
         return;
     }
     const options = {
-        'topic' :"webpage-event",
-        'message': eventData
+        'topic' :'webpage-event',
+        'message': JSON.stringify(eventData)
     }
     console.log('events starts logging');
     const response = await producer.send(options);
@@ -51,13 +53,14 @@ async function sendToCavalier(producer, eventData) {
 async function requestHandler(req,res) {
     console.log('start request handler');
     const producer = await init();
-    const data = req.body;
-    const ip = request.socket.remoteAddress;
+    let data = req.body;
+    console.log('data',data);
+    const ip = req.socket.remoteAddress;
     const eventData = enrichEvent(data, ip);
     console.log('eventData',eventData);
-    await sendToCavalier(producer, eventData);
+    await sendToCavalier(producer, data);
     console.log('request handler finished');
-    res.send('successfully logged to kafka')
+    res.send('successfully logged to kafka');
 }
 
 module.exports = {

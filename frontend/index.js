@@ -34,11 +34,9 @@ function sendToServer(event) {
     const url = 'http://localhost:5000/apigateway/cav-analytics'
     axios.post(url, event, {
         headers: {
-          'cambridgeone-app-version': 'v2'
+          'cambridgeone-app-version': 'v2',
+          "content-type": "application/json",
         }
-      })
-      .then((response)=>{
-        console.log(response);
       })
 }
 
