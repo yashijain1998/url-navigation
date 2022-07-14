@@ -1,4 +1,4 @@
-import 'url-change-event';
+require('url-change-event')
 let app;
 
 function init(appName){
