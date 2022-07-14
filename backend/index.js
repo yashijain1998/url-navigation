@@ -57,6 +57,7 @@ async function requestHandler(req,res) {
     console.log('eventData',eventData);
     await sendToCavalier(producer, eventData);
     console.log('request handler finished');
+    res.send('successfully logged to kafka')
 }
 
 module.exports = {
