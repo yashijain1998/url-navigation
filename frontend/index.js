@@ -30,7 +30,7 @@ function constructPageViewEvent(eventData) {
 }
 
 function sendToServer(event) {
-    const url = 'http//localhost:8080/apigateway/cav-analytics'
+    const url = 'http//localhost:5000/apigateway/cav-analytics'
     axios.post(url, event)
       .then((response)=>{
         console.log(response);
