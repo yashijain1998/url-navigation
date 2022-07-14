@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
+    "kafkajs": "^2.1.0",
     "url-change-event": "^0.1.3"
   }
 }
