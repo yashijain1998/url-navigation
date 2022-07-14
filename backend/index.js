@@ -5,6 +5,7 @@ const kafkaBroker = process.env.kafka_bootstrap_server;
 // let producer = null;
 
 async function init() {
+    console.log('init function called');
     const kafka = new Kafka({
         clientId: 'kafkajs-produce',
         brokers: [kafkaBroker],
@@ -17,6 +18,7 @@ async function init() {
       })
     const producer  = kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner });
     await producer.connect();
+    console.log('producer connected');
     return producer;
 }
 
@@ -41,15 +43,20 @@ async function sendToCavalier(producer, eventData) {
         'topic' :"webpage-event",
         'message': eventData
     }
-    await producer.send(options);
+    console.log('events starts logging');
+    const response = await producer.send(options);
+    console.log('response from kafka',response);
 }
 
 async function requestHandler(req,res) {
+    console.log('start request handler');
     const producer = await init();
     const data = req.body;
     const ip = request.socket.remoteAddress;
     const eventData = enrichEvent(data, ip);
+    console.log('eventData',eventData);
     await sendToCavalier(producer, eventData);
+    console.log('request handler finished');
 }
 
 module.exports = {
