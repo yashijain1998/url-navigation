@@ -55,11 +55,9 @@ async function requestHandler(req,res) {
     console.log('start request handler');
     const producer = await init();
     let data = req.body;
-    console.log('data',data);
     const ip = req.socket.remoteAddress;
     const eventData = enrichEvent(data, ip);
-    console.log('eventData',eventData);
-    await sendToCavalier(producer, data);
+    await sendToCavalier(producer, eventData);
     console.log('request handler finished');
     res.send('successfully logged to kafka');
 }
