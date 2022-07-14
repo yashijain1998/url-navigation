@@ -1,5 +1,5 @@
 const { Kafka, Partitioners } = require('kafkajs');
-const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
 const saslUsername = process.env.kafka_sasl_username;
 const saslPassword = process.env.kafka_sasl_password;
 const kafkaBroker = process.env.kafka_bootstrap_server;
@@ -26,9 +26,10 @@ async function init() {
 function enrichEvent(data, ip) {
     console.log('data in enchrichment', data, typeof data)
     const currentTime = new Date().getTime();
+    const uuid = uuidv4();
     const eventData = {
         ...data,
-        'eventId': crypto.randomUUID(),
+        'eventId': uuid,
         'timestamp': currentTime,
         'subSystem': 'c1',
         'ip': ip,
