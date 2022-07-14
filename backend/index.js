@@ -43,8 +43,8 @@ async function sendToCavalier(producer, eventData) {
         return;
     }
     const options = {
-        'topic' :'webpage-event',
-        'message': [{ value: JSON.stringify(eventData) }]
+        topic :'webpage-event',
+        messages: [{ value: JSON.stringify(eventData) }]
     }
     console.log('events starts logging');
     const response = await producer.send(options);
