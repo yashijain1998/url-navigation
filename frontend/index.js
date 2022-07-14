@@ -1,4 +1,5 @@
-require('url-change-event')
+require('url-change-event');
+const axios = require('axios');
 let app;
 
 function init(appName){
@@ -13,26 +14,27 @@ function capturePageViewEvents() {
 }
 
 function constructPageViewEvent(eventData) {
-    const currentTime = new Date().getTime();
     const userAgent = window.navigator.userAgent;
+    const title = window.document.title;
     const webPageEvent = {
-        'eventId': crypto.randomUUID(),
         'EVENT_TYPE': 'WebPageView',
-        'timestamp': currentTime,
         'url': eventData.newURL.href,
         'host': eventData.newURL.host,
         'path': eventData.newURL.pathname,
-        'title': '',
+        'title': title,
         'origin': eventData.oldURL.href,
         'userAgent': userAgent,
-        'subSystem': 'c1',
         'app': app
     }
     return webPageEvent;
 }
 
-function sendToServer(event){
-    console.log(event);
+function sendToServer(event) {
+    const url = 'localhost:8080/apigateway/cav-analytics'
+    axios.post(url, event)
+      .then((response)=>{
+        console.log(response);
+      })
 }
 
 module.exports = {
