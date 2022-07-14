@@ -30,8 +30,13 @@ function constructPageViewEvent(eventData) {
 }
 
 function sendToServer(event) {
+    const domain = window.location.hostname;
     const url = 'http://localhost:5000/apigateway/cav-analytics'
-    axios.post(url, event)
+    axios.post(url, event, {
+        headers: {
+          'cambridgeone-app-version': 'v2'
+        }
+      })
       .then((response)=>{
         console.log(response);
       })
