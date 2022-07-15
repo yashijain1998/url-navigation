@@ -5,12 +5,12 @@ const constants = require('../constants');
 const saslUsername = process.env.kafka_sasl_username;
 const saslPassword = process.env.kafka_sasl_password;
 const kafkaBroker = process.env.kafka_bootstrap_server;
-// let producer = null;
+const kafkaTopic = 'webpage-event';
+let producer = null;
 
-async function init() {
-    console.log('init function called');
+async function init(clientId) {
     const kafka = new Kafka({
-        clientId: 'kafkajs-produce',
+        clientId,
         brokers: [kafkaBroker],
         ssl: true,
         sasl: {
@@ -19,14 +19,11 @@ async function init() {
           password: saslPassword
         },
       })
-    const producer  = kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner });
+    producer = kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner });
     await producer.connect();
-    console.log('producer connected');
-    return producer;
 }
 
 function enrichEvent(data, ip) {
-    console.log('data in enchrichment', data, typeof data)
     const currentTime = new Date().getTime();
     const uuid = uuidv4();
     const eventData = {
@@ -39,31 +36,28 @@ function enrichEvent(data, ip) {
     return eventData;
 }
 
-async function sendToCavalier(producer, eventData) {
+function sendToCavalier(producer, eventData) {
 	if(producer === null) {
         console.log('please initialize init() method');
         return;
     }
     const options = {
-        topic :'webpage-event',
+        topic: kafkaTopic,
         messages: [{ value: JSON.stringify(eventData) }]
     }
-    console.log('events starts logging');
-    const response = await producer.send(options);
-    console.log('response from kafka',response);
+    producer.send(options)
+    .catch(err => console.log(err));
 }
 
-async function requestHandler(req,res) {
-    console.log('start request handler');
-    const producer = await init();
+function requestHandler(req,res) {
     let data = req.body;
     const ip = req.socket.remoteAddress;
     const eventData = enrichEvent(data, ip);
-    await sendToCavalier(producer, eventData);
-    console.log('request handler finished');
+    sendToCavalier(eventData);
     res.send('successfully logged to kafka');
 }
 
 module.exports = {
+    init,
     requestHandler
 }
