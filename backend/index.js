@@ -36,7 +36,7 @@ function enrichEvent(data, ip) {
     return eventData;
 }
 
-function sendToCavalier(producer, eventData) {
+function sendToCavalier(eventData) {
 	if(producer === null) {
         console.log('please initialize init() method');
         return;
