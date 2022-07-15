@@ -37,9 +37,15 @@ function sendToServer(event) {
     axios.post(url, event, {
         headers: {
           'cambridgeone-app-version': constants.HEADER_PROPERTIES.CambridgeoneAppVersion,
-          "content-type": "application/json",
+          'content-type': 'application/json',
+          'csrf-token': getCsrfToken()
         }
       })
+}
+
+function getCsrfToken() {
+    const cookie = Object.fromEntries(document.cookie.split('; ').map(v=>v.split(/=/).map(decodeURIComponent)));
+    return cookie['csrf-token'];
 }
 
 module.exports = {
