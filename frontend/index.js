@@ -1,5 +1,6 @@
 require('url-change-event');
 const axios = require('axios');
+const constants = require('../constants');
 let app;
 
 function init(appName){
@@ -17,7 +18,7 @@ function constructPageViewEvent(eventData) {
     const userAgent = window.navigator.userAgent;
     const title = window.document.title;
     const webPageEvent = {
-        'EVENT_TYPE': 'WebPageView',
+        'EVENT_TYPE': constants.EVENT_TYPES.WebPageView,
         'url': eventData.newURL.href,
         'host': eventData.newURL.host,
         'path': eventData.newURL.pathname,
@@ -31,11 +32,11 @@ function constructPageViewEvent(eventData) {
 
 function sendToServer(event) {
     const domain = window.location.origin;
-    const url = `${domain}/apigateway/cav-analytics`
+    const url = `${domain}${constants.ENDPOINT.CavalierAnalytics}`
     console.log('sendToserver', url)
     axios.post(url, event, {
         headers: {
-          'cambridgeone-app-version': 'v2',
+          'cambridgeone-app-version': constants.HEADER_PROPERTIES.CambridgeoneAppVersion,
           "content-type": "application/json",
         }
       })

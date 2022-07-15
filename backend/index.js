@@ -1,5 +1,7 @@
 const { Kafka, Partitioners } = require('kafkajs');
 const { v4: uuidv4 } = require('uuid');
+const constants = require('../constants');
+
 const saslUsername = process.env.kafka_sasl_username;
 const saslPassword = process.env.kafka_sasl_password;
 const kafkaBroker = process.env.kafka_bootstrap_server;
@@ -31,7 +33,7 @@ function enrichEvent(data, ip) {
         ...data,
         'eventId': uuid,
         'timestamp': currentTime,
-        'subSystem': 'c1',
+        'subSystem': constants.SUB_SYSTEMS.CambridgeOne,
         'ip': ip,
     }
     return eventData;
