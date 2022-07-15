@@ -32,8 +32,7 @@ function constructPageViewEvent(eventData) {
 
 function sendToServer(event) {
     const domain = window.location.origin;
-    const url = `${domain}${constants.ENDPOINT.CavalierAnalytics}`
-    console.log('sendToserver', url)
+    const url = `${domain}${constants.ENDPOINT.CavalierAnalytics}`;
     axios.post(url, event, {
         headers: {
           'cambridgeone-app-version': constants.HEADER_PROPERTIES.CambridgeoneAppVersion,
