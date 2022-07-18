@@ -43,7 +43,7 @@ function sendToServer(event) {
 }
 
 function getCsrfToken() {
-    const cookie = Object.fromEntries(document.cookie.split('; ').map(v=>v.split(/=/).map(decodeURIComponent)));
+    const cookie = Object.fromEntries(document.cookie.split('; ').map(v=>v.split('=').map(decodeURIComponent)));
     return cookie['csrf-token'];
 }
 

@@ -23,7 +23,7 @@ async function init(clientId) {
     await producer.connect();
 }
 
-function enrichEvent(data, ip) {
+function enrichEvent(data, ip, userId) {
     const currentTime = new Date().getTime();
     const uuid = uuidv4();
     const eventData = {
@@ -32,6 +32,7 @@ function enrichEvent(data, ip) {
         'timestamp': currentTime,
         'subSystem': constants.SUB_SYSTEMS.CambridgeOne,
         'ip': ip,
+        'userId': userId
     }
     return eventData;
 }
@@ -52,7 +53,11 @@ function sendToCavalier(eventData) {
 function requestHandler(req,res) {
     let data = req.body;
     const ip = req.socket.remoteAddress;
-    const eventData = enrichEvent(data, ip);
+    let userId = null;
+    if(req.session?.extUserId) {
+        userId = req.session?.extUserId;
+    }
+    const eventData = enrichEvent(data, ip, userId);
     sendToCavalier(eventData);
     res.send('successfully logged to kafka');
 }
