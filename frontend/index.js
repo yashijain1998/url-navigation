@@ -1,7 +1,7 @@
 require('url-change-event');
 
 const axios = require('axios');
-const {EVENT_TYPES, URL_ENDPOINTS, APP_METADATA} = require('../constants');
+const { EVENT_TYPES, URL_ENDPOINTS, APP_METADATA } = require('../constants');
 
 let app;
 
@@ -13,7 +13,7 @@ function capturePageViewEvents() {
     window.addEventListener('urlchangeevent', function(eventData) {
         const webPageEvent = constructPageViewEvent(eventData.newURL, eventData.oldURL)
         postEventData(webPageEvent);
-    })
+    });
 }
 
 function constructPageViewEvent(newURL, oldURL) {
@@ -42,7 +42,7 @@ function postEventData(event) {
           'content-type': 'application/json',
           'csrf-token': getCsrfToken()
         }
-      })
+      });
 }
 
 function getCsrfToken() {

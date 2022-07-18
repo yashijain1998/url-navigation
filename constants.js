@@ -18,7 +18,6 @@ const APP_METADATA = {
     AppVersion: 'v2'
 }
 
-
 module.exports = {
     EVENT_TYPES,
     SUB_SYSTEMS,
