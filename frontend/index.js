@@ -9,21 +9,21 @@ function init(appName){
 
 function capturePageViewEvents() {
     window.addEventListener('urlchangeevent', function(eventData) {
-        const webPageEvent = constructPageViewEvent(eventData)
+        const webPageEvent = constructPageViewEvent(eventData.newURL, eventData.oldURL)
         sendToServer(webPageEvent);
     })
 }
 
-function constructPageViewEvent(eventData) {
+function constructPageViewEvent(newURL, oldURL) {
     const userAgent = window.navigator.userAgent;
     const title = window.document.title;
     const webPageEvent = {
         'EVENT_TYPE': constants.EVENT_TYPES.WebPageView,
-        'url': eventData.newURL.href,
-        'host': eventData.newURL.host,
-        'path': eventData.newURL.pathname,
+        'url': newURL ? newURL.href : null,
+        'host': newURL ? newURL.host : null,
+        'path': newURL ? newURL.pathname : null,
+        'origin': oldURL ? oldURL.href : null,
         'title': title,
-        'origin': eventData.oldURL.href,
         'userAgent': userAgent,
         'app': app
     }
