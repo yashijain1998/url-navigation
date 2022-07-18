@@ -1,11 +1,10 @@
 const { Kafka, Partitioners } = require('kafkajs');
 const { v4: uuidv4 } = require('uuid');
-const {SUB_SYSTEMS, KAFKA_TOPICS, EVENT_TYPES} = require('../constants');
+const { SUB_SYSTEMS, KAFKA_TOPICS, EVENT_TYPES } = require('../constants');
 
 const saslUsername = process.env.kafka_sasl_username;
 const saslPassword = process.env.kafka_sasl_password;
 const kafkaBroker = process.env.kafka_bootstrap_server;
-const kafkaTopic = 'webpage-event';
 let producer = null;
 
 async function init(clientId) {
@@ -17,8 +16,8 @@ async function init(clientId) {
           mechanism: 'plain',
           username: saslUsername,
           password: saslPassword
-        },
-      })
+        }
+      });
     producer = kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner });
     await producer.connect();
 }
@@ -39,7 +38,7 @@ function enrichEvent(data, options) {
 
 function getTopicName(type){
     let topicName;
-    switch(type){
+    switch(type) {
         case EVENT_TYPES.WebPageView:
             topicName = KAFKA_TOPICS.WebPageView
         break;
@@ -60,9 +59,8 @@ function postToKafka(eventData) {
     .catch(err => console.log(err));
 }
 
-function requestHandler(req,res) {
+function requestHandler(req, res) {
     let data = req.body;
-
     let userId = null;
     if(req.session?.extUserId) {
         userId = req.session?.extUserId;
