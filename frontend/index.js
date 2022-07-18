@@ -1,6 +1,8 @@
 require('url-change-event');
+
 const axios = require('axios');
 const {EVENT_TYPES, URL_ENDPOINTS, APP_METADATA} = require('../constants');
+
 let app;
 
 function init(appName){
@@ -10,7 +12,7 @@ function init(appName){
 function capturePageViewEvents() {
     window.addEventListener('urlchangeevent', function(eventData) {
         const webPageEvent = constructPageViewEvent(eventData.newURL, eventData.oldURL)
-        sendToServer(webPageEvent);
+        postEventData(webPageEvent);
     })
 }
 
@@ -31,7 +33,7 @@ function constructPageViewEvent(newURL, oldURL) {
     return webPageEvent;
 }
 
-function sendToServer(event) {
+function postEventData(event) {
     const domain = window.location.origin;
     const url = `${domain}${URL_ENDPOINTS.ServerAnalytics}`;
     axios.post(url, event, {
