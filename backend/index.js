@@ -59,7 +59,9 @@ function requestHandler(req,res) {
     }
     const eventData = enrichEvent(data, ip, userId);
     sendToCavalier(eventData);
-    res.send('successfully logged to kafka');
+    res.json({
+        'success':'true'
+    });
 }
 
 module.exports = {
